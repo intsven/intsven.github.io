@@ -45,11 +45,15 @@ export class EvolutionManager {
         
         const itemObj = { element: itemEl, params, flower: FlowerGenerator.createFlower(params), selected: false };
 
+        // Controls wrapper (at the top)
+        const controlsEl = document.createElement('div');
+        controlsEl.className = 'item-controls';
+
         const favBtn = document.createElement('button');
         favBtn.className = 'btn-fav-icon';
         favBtn.innerHTML = '❤️';
         favBtn.onclick = (e) => { e.stopPropagation(); this.onFavoriteCallback(params); };
-        itemEl.appendChild(favBtn);
+        controlsEl.appendChild(favBtn);
 
         const selectBtn = document.createElement('button');
         selectBtn.className = 'btn-select';
@@ -61,9 +65,15 @@ export class EvolutionManager {
             selectBtn.textContent = itemObj.selected ? 'Gewählt ✓' : (isOriginal ? 'Basis' : 'Wählen');
             this.onSelectionChangeCallback(this.getSelectedParams().length);
         };
-        itemEl.appendChild(selectBtn);
-        container.appendChild(itemEl);
+        controlsEl.appendChild(selectBtn);
+        itemEl.appendChild(controlsEl);
 
+        // Preview area (at the bottom)
+        const previewEl = document.createElement('div');
+        previewEl.className = 'item-preview';
+        itemEl.appendChild(previewEl);
+
+        container.appendChild(itemEl);
         this.gridItems.push(itemObj);
     }
 

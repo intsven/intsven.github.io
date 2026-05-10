@@ -37,8 +37,17 @@ export class GalleryManager {
         favorites.forEach((params, idx) => {
             const itemEl = document.createElement('div');
             itemEl.className = 'fav-item';
-            itemEl.onclick = () => this.onSelectCallback(params);
             
+            // Controls wrapper (at the top)
+            const controlsEl = document.createElement('div');
+            controlsEl.className = 'item-controls';
+
+            const selectBtn = document.createElement('button');
+            selectBtn.className = 'btn-select';
+            selectBtn.textContent = 'Wählen';
+            selectBtn.onclick = (e) => { e.stopPropagation(); this.onSelectCallback(params); };
+            controlsEl.appendChild(selectBtn);
+
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'btn-delete-fav';
             deleteBtn.innerHTML = '✕';
@@ -47,12 +56,18 @@ export class GalleryManager {
                 e.stopPropagation();
                 this.onDeleteCallback(idx);
             };
-            itemEl.appendChild(deleteBtn);
+            controlsEl.appendChild(deleteBtn);
+            itemEl.appendChild(controlsEl);
+
+            // Preview area (at the bottom)
+            const previewEl = document.createElement('div');
+            previewEl.className = 'item-preview';
+            itemEl.appendChild(previewEl);
             
             container.appendChild(itemEl);
 
             const flower = FlowerGenerator.createFlower(params);
-            this.gridItems.push({ element: itemEl, params, flower });
+            this.gridItems.push({ element: previewEl, params, flower });
         });
     }
 
