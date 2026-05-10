@@ -47,12 +47,6 @@ main {
   display: grid;
   grid-template-columns: 450px 1fr;
   gap: 1.5rem;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.3);
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   margin-bottom: 2rem;
   height: 700px;
   position: relative;
@@ -61,7 +55,12 @@ main {
 
 #controls-wrapper {
   overflow-y: auto;
-  padding-right: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
 }
 
 .controls-grid {
@@ -93,9 +92,9 @@ h3 {
 #main-canvas-container {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.03);
+  background: transparent; /* No background to allow fixed canvas to show through */
   border-radius: 12px;
-  border: 1px dashed #cbd5e0;
+  border: 1px dashed rgba(203, 213, 224, 0.5);
 }
 
 #favorites-section, #history-section, #evolution-section {
