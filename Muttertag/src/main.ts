@@ -147,7 +147,7 @@ function update(save = true, addToHistory = false) {
   if (save) saveCurrentBase(currentParams);
   if (addToHistory) addHistory(currentParams);
   sceneManager.updateFlower(currentParams);
-  evolutionManager.updateGrid(currentParams, evolutionGrid, parseInt(inputGridCount.value) || 9);
+  evolutionManager.updateGrid(currentParams, evolutionGrid, parseInt(inputGridCount.value) || 16);
   btnNextGen.disabled = true;
 }
 
@@ -161,7 +161,7 @@ btnNextGen.onclick = () => {
         updateUI();
         saveCurrentBase(currentParams);
         sceneManager.updateFlower(currentParams);
-        evolutionManager.breed(selected, evolutionGrid, parseInt(inputGridCount.value) || 9);
+        evolutionManager.breed(selected, evolutionGrid, parseInt(inputGridCount.value) || 16);
         btnNextGen.disabled = true;
     }
 };
