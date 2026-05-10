@@ -16,8 +16,24 @@ const btnReset = document.getElementById('btn-reset-evolution')!;
 const btnFavMain = document.getElementById('btn-fav-main')!;
 const btnNextGen = document.getElementById('btn-next-gen') as HTMLButtonElement;
 const inputGridCount = document.getElementById('input-grid-count') as HTMLInputElement;
+const btnHelp = document.getElementById('btn-help')!;
+const helpModal = document.getElementById('help-modal')!;
+const btnCloseModal = document.getElementById('btn-close-modal')!;
 
 const sceneManager = new SceneManager(canvasContainer, mainPlaceholder);
+
+// Modal Logic
+function showModal() { helpModal.style.display = 'flex'; }
+function hideModal() { helpModal.style.display = 'none'; }
+
+btnHelp.onclick = showModal;
+btnCloseModal.onclick = hideModal;
+
+// Show on first visit
+if (!localStorage.getItem('muttertag_visited')) {
+    showModal();
+    localStorage.setItem('muttertag_visited', 'true');
+}
 
 let favorites: FlowerParams[] = loadFavorites();
 let history: FlowerParams[] = loadHistory();

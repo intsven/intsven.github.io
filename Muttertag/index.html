@@ -8,6 +8,37 @@
   </head>
   <body>
     <div id="canvas-container"></div>
+    <button id="btn-help" title="Hilfe & Anleitung">?</button>
+
+    <div id="help-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Willkommen beim Blumen-Züchter! 🌸</h2>
+        <p>Erstelle deine eigene einzigartige 3D-Blume durch prozedurale Geometrie und Evolution.</p>
+        
+        <h3>🛠️ Der Editor</h3>
+        <ul>
+          <li><b>Globale Basis:</b> Ändere Grundfarben, Stil (Glatt, Low-Poly, Gitter) und Stängellänge.</li>
+          <li><b>Interaktion:</b> Klicke und ziehe im großen Vorschaufenster, um die Blume zu drehen.</li>
+          <li><b>❤️ Favoriten:</b> Speichere Designs, die dir gefallen, in deiner Galerie.</li>
+        </ul>
+
+        <h3>🧬 Der Zuchtgarten</h3>
+        <ul>
+          <li><b>Mutation:</b> Jede Blume im Garten ist eine zufällige Variation deiner aktuellen Basis.</li>
+          <li><b>Anzahl:</b> Wähle aus, wie viele Variationen gleichzeitig generiert werden sollen.</li>
+          <li><b>Züchtung:</b> Wähle ein oder mehrere "Eltern" aus dem Garten aus und klicke auf "Nächste Generation", um deren Merkmale zu kombinieren und weiterzuentwickeln.</li>
+        </ul>
+
+        <h3>📚 Galerie & Historie</h3>
+        <ul>
+          <li><b>Favoriten:</b> Deine gespeicherten Blumen bleiben hier sicher (auch nach einem Refresh).</li>
+          <li><b>Historie:</b> Verfolge den Weg deiner Züchtung zurück und kehre jederzeit zu einem früheren Schritt zurück.</li>
+        </ul>
+
+        <button id="btn-close-modal">Verstanden!</button>
+      </div>
+    </div>
+
     <header>
       <h1>Abstract Muttertag 3D</h1>
       <p>Prozedurale Geometrie & Parameter-Sweeps</p>
@@ -64,7 +95,7 @@
                 <input type="number" id="input-grid-count" min="1" max="32" value="9" style="width: 50px;">
             </div>
             <button id="btn-next-gen" class="btn-primary" disabled>Nächste Generation</button>
-            <button id="btn-reset-evolution">Reset Basis</button>
+            <button id="btn-reset-evolution">Zufällige Basis</button>
           </div>
         </div>
         <p>Wähle einen oder mehrere Favoriten aus und klicke auf "Nächste Generation".</p>
