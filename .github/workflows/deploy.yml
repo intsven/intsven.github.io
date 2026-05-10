@@ -43,9 +43,13 @@ jobs:
 
       - name: Prepare Deployment
         run: |
+          rm -rf public
           mkdir public
+          # Copy root landing page
           cp index.html public/
-          cp -r Muttertag/dist public/Muttertag
+          # Create subdirectory for Muttertag and copy built assets
+          mkdir -p public/Muttertag
+          cp -r Muttertag/dist/* public/Muttertag/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
