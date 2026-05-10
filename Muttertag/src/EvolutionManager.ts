@@ -14,7 +14,8 @@ export class EvolutionManager {
         params: FlowerParams, 
         flower: THREE.Group, 
         selected: boolean,
-        isHovered: boolean
+        isHovered: boolean,
+        isDragged: boolean
     }[] = [];
     private sharedRotationY = 0;
     private sharedRotationX = 0;
@@ -70,7 +71,8 @@ export class EvolutionManager {
             params, 
             flower, 
             selected: false,
-            isHovered: false
+            isHovered: false,
+            isDragged: false
         };
 
         // Interaction logic for performance mode
@@ -80,9 +82,13 @@ export class EvolutionManager {
         };
         previewEl.onmouseleave = () => { 
             itemObj.isHovered = false; 
-            imgEl.src = thumbnailGenerator.generate(flower);
-            imgEl.style.opacity = '1';
+            if (!itemObj.isDragged) {
+                imgEl.src = thumbnailGenerator.generate(flower);
+                imgEl.style.opacity = '1';
+            }
         };
+        previewEl.addEventListener('mousedown', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
+        previewEl.addEventListener('touchstart', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
 
         // Controls wrapper (at the top)
         const controlsEl = document.createElement('div');
@@ -111,6 +117,16 @@ export class EvolutionManager {
 
         container.appendChild(itemEl);
         this.gridItems.push(itemObj);
+    }
+
+    public clearDragStates() {
+        this.gridItems.forEach(item => {
+            if (item.isDragged) {
+                item.isDragged = false;
+                item.imgEl.src = thumbnailGenerator.generate(item.flower);
+                item.imgEl.style.opacity = '1';
+            }
+        });
     }
 
     public updateSnapshots() {
@@ -216,8 +232,7 @@ export class EvolutionManager {
     public render(forceAll: boolean = false) {
         this.renderer.setScissorTest(true);
         this.gridItems.forEach(item => {
-            if (!item.isHovered && !forceAll) return;
-
+            if (!item.isHovered && !item.isDragged && !forceAll) return;
             const rect = item.previewEl.getBoundingClientRect();
             if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) return;
             const width = rect.right - rect.left, height = rect.bottom - rect.top;

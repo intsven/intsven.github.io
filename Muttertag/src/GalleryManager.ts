@@ -13,7 +13,8 @@ export class GalleryManager {
         imgEl: HTMLImageElement,
         params: FlowerParams, 
         flower: THREE.Group,
-        isHovered: boolean
+        isHovered: boolean,
+        isDragged: boolean
     }[] = [];
     private sharedRotationY = 0;
     private sharedRotationX = 0;
@@ -63,7 +64,8 @@ export class GalleryManager {
                 imgEl, 
                 params, 
                 flower,
-                isHovered: false 
+                isHovered: false,
+                isDragged: false
             };
 
             // Interaction logic
@@ -73,9 +75,13 @@ export class GalleryManager {
             };
             previewEl.onmouseleave = () => {
                 itemObj.isHovered = false;
-                imgEl.src = thumbnailGenerator.generate(flower);
-                imgEl.style.opacity = '1';
+                if (!itemObj.isDragged) {
+                    imgEl.src = thumbnailGenerator.generate(flower);
+                    imgEl.style.opacity = '1';
+                }
             };
+            previewEl.addEventListener('mousedown', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
+            previewEl.addEventListener('touchstart', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
 
             // Controls wrapper (at the top)
             const controlsEl = document.createElement('div');
@@ -105,6 +111,16 @@ export class GalleryManager {
         });
     }
 
+    public clearDragStates() {
+        this.gridItems.forEach(item => {
+            if (item.isDragged) {
+                item.isDragged = false;
+                item.imgEl.src = thumbnailGenerator.generate(item.flower);
+                item.imgEl.style.opacity = '1';
+            }
+        });
+    }
+
     public updateSnapshots() {
         this.gridItems.forEach(item => {
             item.imgEl.src = thumbnailGenerator.generate(item.flower);
@@ -121,7 +137,7 @@ export class GalleryManager {
     public render(forceAll: boolean = false) {
         this.renderer.setScissorTest(true);
         this.gridItems.forEach(item => {
-            if (!item.isHovered && !forceAll) return;
+            if (!item.isHovered && !item.isDragged && !forceAll) return;
 
             const rect = item.previewEl.getBoundingClientRect();
             if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) return;

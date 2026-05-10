@@ -19,6 +19,7 @@ const inputGridCount = document.getElementById('input-grid-count') as HTMLInputE
 const btnHelp = document.getElementById('btn-help')!;
 const helpModal = document.getElementById('help-modal')!;
 const btnCloseModal = document.getElementById('btn-close-modal')!;
+const inputPerformanceMode = document.getElementById('performanceMode') as HTMLInputElement;
 
 const sceneManager = new SceneManager(canvasContainer, mainPlaceholder);
 
@@ -185,9 +186,9 @@ function onPointerMove(e: MouseEvent | TouchEvent) {
 function onPointerUp() { 
     if (isDragging) {
         isDragging = false; 
-        evolutionManager.updateSnapshots();
-        galleryManager.updateSnapshots();
-        historyManager.updateSnapshots();
+        evolutionManager.clearDragStates();
+        galleryManager.clearDragStates();
+        historyManager.clearDragStates();
     }
 }
 
@@ -224,12 +225,12 @@ function animate(time: number) {
   sceneManager.setRotation(globalRotationX, globalRotationY);
   sceneManager.render();
   
-  const dynamicAll = isDragging;
+  const forceAll = !inputPerformanceMode.checked;
   evolutionManager.update(globalRotationX, globalRotationY);
-  evolutionManager.render(dynamicAll);
+  evolutionManager.render(forceAll);
   galleryManager.update(globalRotationX, globalRotationY);
-  galleryManager.render(dynamicAll);
+  galleryManager.render(forceAll);
   historyManager.update(globalRotationX, globalRotationY);
-  historyManager.render(dynamicAll);
+  historyManager.render(forceAll);
 }
 requestAnimationFrame(animate);
