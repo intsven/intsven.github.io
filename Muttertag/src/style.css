@@ -40,6 +40,7 @@ main {
   width: 100%;
   padding: 1.5rem;
   box-sizing: border-box;
+  position: relative;
 }
 
 #editor-container {
@@ -137,6 +138,8 @@ h3 {
   border-radius: 16px;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 50;
 }
 
 #favorites-grid, #history-grid {
@@ -153,38 +156,38 @@ h3 {
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 0.2s;
-  z-index: 150;
+  z-index: 200;
 }
 
 .fav-item:hover, .history-item:hover {
   border-color: #ed64a6;
   transform: scale(1.05);
-  z-index: 160;
+  z-index: 210;
 }
 
 .btn-fav-icon {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(4px);
-  border: 1px solid rgba(237, 100, 166, 0.5);
+  border: 1px solid #ed64a6;
   color: #ed64a6;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
-  z-index: 170;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  font-size: 1rem;
+  z-index: 220;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   transition: all 0.2s;
 }
 
 .btn-fav-icon:hover {
-  background: rgba(255, 245, 247, 0.8);
+  background: rgba(255, 255, 255, 1);
   transform: scale(1.1);
 }
 
@@ -192,20 +195,25 @@ h3 {
   position: absolute;
   bottom: 8px;
   right: 8px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(4px);
   border: none;
   color: #666;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 170;
+  z-index: 220;
   transition: all 0.2s;
+}
+
+.btn-delete-fav:hover {
+  background: #fee2e2;
+  color: #ef4444;
 }
 
 .btn-delete-fav:hover {
@@ -220,6 +228,8 @@ h3 {
   border-radius: 16px;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 50;
 }
 
 .section-header {
@@ -351,13 +361,13 @@ h3 {
   position: relative;
   border: 2px solid transparent;
   transition: all 0.2s;
-  z-index: 150;
+  z-index: 200;
 }
 
 .evolution-item:hover {
   border-color: rgba(237, 100, 166, 0.3);
   transform: scale(1.02);
-  z-index: 160;
+  z-index: 210;
 }
 
 .breeding-controls {
@@ -400,22 +410,23 @@ h3 {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(237, 100, 166, 0.4);
+  background: rgba(237, 100, 166, 0.7);
   backdrop-filter: blur(4px);
   color: white;
   border: none;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: bold;
   transition: all 0.2s;
-  z-index: 170;
+  z-index: 220;
   pointer-events: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .btn-select:hover {
-  background: rgba(237, 100, 166, 0.8);
+  background: rgba(237, 100, 166, 1);
   transform: scale(1.05);
 }
 
