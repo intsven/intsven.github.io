@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abstract Muttertag 3D</title>
+  </head>
+  <body>
+    <div id="canvas-container"></div>
+    <header>
+      <h1>Abstract Muttertag 3D</h1>
+      <p>Prozedurale Geometrie & Parameter-Sweeps</p>
+    </header>
+
+    <main>
+      <section id="editor-container">
+        <div id="controls-wrapper">
+          <h3>Globale Basis</h3>
+          <div id="controls" class="controls-grid">
+            <div class="control-group">
+              <label>Zentrum Farbe</label>
+              <input type="color" id="centerColor" value="#ffcc00" />
+            </div>
+            <div class="control-group">
+              <label>Stil</label>
+              <select id="visualStyle">
+                <option value="smooth">Glatt</option>
+                <option value="low-poly">Low-Poly</option>
+                <option value="wireframe">Wireframe</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label>Stängel: <span id="val-stemLength"></span></label>
+              <input type="range" id="stemLength" min="0" max="5" step="0.1" value="2" />
+            </div>
+            <button id="btn-fav-main" class="btn-fav-large">❤️ Favorit speichern</button>
+          </div>
+          <p style="font-size: 0.8rem; color: #666; font-style: italic;">
+            Hinweis: Da jede Blütenschicht nun eigene Parameter hat, nutzt du am besten den <b>Zuchtgarten</b> unten, um die Form und Farben durch Auswahl weiterzuentwickeln.
+          </p>
+        </div>
+        <div id="main-canvas-container"></div>
+      </section>
+
+      <section id="favorites-section">
+        <h2>Favoriten-Galerie</h2>
+        <div id="favorites-grid" class="grid-container"></div>
+        <p id="fav-empty-msg" style="text-align: center; color: #999; padding: 2rem;">Noch keine Favoriten gespeichert. Klicke auf das Herz oder "Favorit speichern".</p>
+      </section>
+
+      <section id="history-section">
+        <h2>Zuchthistorie</h2>
+        <div id="history-grid" class="grid-container"></div>
+        <p id="history-empty-msg" style="text-align: center; color: #999; padding: 2rem;">Wähle eine Blume im Zuchtgarten aus, um deine Historie zu starten.</p>
+      </section>
+
+      <section id="evolution-section">
+        <div class="section-header">
+          <h2>Zuchtgarten</h2>
+          <div class="breeding-controls">
+            <button id="btn-next-gen" class="btn-primary" disabled>Nächste Generation</button>
+            <button id="btn-reset-evolution">Reset Basis</button>
+          </div>
+        </div>
+        <p>Wähle einen oder mehrere Favoriten aus und klicke auf "Nächste Generation".</p>
+        <div id="evolution-grid" class="grid-container"></div>
+      </section>
+
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
