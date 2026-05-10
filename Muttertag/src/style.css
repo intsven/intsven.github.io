@@ -153,21 +153,22 @@ h3 {
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 0.2s;
+  z-index: 150;
 }
 
 .fav-item:hover, .history-item:hover {
   border-color: #ed64a6;
   transform: scale(1.05);
-  z-index: 10;
+  z-index: 160;
 }
 
 .btn-fav-icon {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(4px);
-  border: 1px solid #ed64a6;
+  border: 1px solid rgba(237, 100, 166, 0.5);
   color: #ed64a6;
   width: 28px;
   height: 28px;
@@ -177,13 +178,13 @@ h3 {
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
-  z-index: 130;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 170;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: all 0.2s;
 }
 
 .btn-fav-icon:hover {
-  background: rgba(255, 245, 247, 0.9);
+  background: rgba(255, 245, 247, 0.8);
   transform: scale(1.1);
 }
 
@@ -191,7 +192,7 @@ h3 {
   position: absolute;
   bottom: 8px;
   right: 8px;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(4px);
   border: none;
   color: #666;
@@ -203,7 +204,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 130;
+  z-index: 170;
   transition: all 0.2s;
 }
 
@@ -350,12 +351,13 @@ h3 {
   position: relative;
   border: 2px solid transparent;
   transition: all 0.2s;
+  z-index: 150;
 }
 
 .evolution-item:hover {
   border-color: rgba(237, 100, 166, 0.3);
   transform: scale(1.02);
-  z-index: 10;
+  z-index: 160;
 }
 
 .breeding-controls {
@@ -398,7 +400,7 @@ h3 {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(237, 100, 166, 0.6);
+  background: rgba(237, 100, 166, 0.4);
   backdrop-filter: blur(4px);
   color: white;
   border: none;
@@ -408,12 +410,12 @@ h3 {
   font-size: 0.75rem;
   font-weight: bold;
   transition: all 0.2s;
-  z-index: 120;
+  z-index: 170;
   pointer-events: auto;
 }
 
 .btn-select:hover {
-  background: rgba(237, 100, 166, 0.9);
+  background: rgba(237, 100, 166, 0.8);
   transform: scale(1.05);
 }
 
