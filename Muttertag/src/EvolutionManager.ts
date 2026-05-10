@@ -1,12 +1,21 @@
 import * as THREE from 'three';
 import { FlowerGenerator } from './FlowerGenerator';
 import type { FlowerParams } from './FlowerGenerator';
+import { thumbnailGenerator } from './ThumbnailGenerator';
 
 export class EvolutionManager {
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
     private camera: THREE.PerspectiveCamera;
-    private gridItems: { element: HTMLElement, params: FlowerParams, flower: THREE.Group, selected: boolean }[] = [];
+    private gridItems: { 
+        element: HTMLElement, 
+        previewEl: HTMLElement, 
+        imgEl: HTMLImageElement,
+        params: FlowerParams, 
+        flower: THREE.Group, 
+        selected: boolean,
+        isHovered: boolean
+    }[] = [];
     private sharedRotationY = 0;
     private sharedRotationX = 0;
     private onFavoriteCallback: (params: FlowerParams) => void;
@@ -47,11 +56,32 @@ export class EvolutionManager {
         const previewEl = document.createElement('div');
         previewEl.className = 'item-preview';
 
+        const flower = FlowerGenerator.createFlower(params);
+        
+        const imgEl = document.createElement('img');
+        imgEl.className = 'static-preview';
+        imgEl.src = thumbnailGenerator.generate(flower);
+        previewEl.appendChild(imgEl);
+
         const itemObj = { 
-            element: previewEl, 
+            element: itemEl, 
+            previewEl, 
+            imgEl, 
             params, 
-            flower: FlowerGenerator.createFlower(params), 
-            selected: false 
+            flower, 
+            selected: false,
+            isHovered: false
+        };
+
+        // Interaction logic for performance mode
+        previewEl.onmouseenter = () => { 
+            itemObj.isHovered = true; 
+            imgEl.style.opacity = '0';
+        };
+        previewEl.onmouseleave = () => { 
+            itemObj.isHovered = false; 
+            imgEl.src = thumbnailGenerator.generate(flower);
+            imgEl.style.opacity = '1';
         };
 
         // Controls wrapper (at the top)
@@ -81,6 +111,14 @@ export class EvolutionManager {
 
         container.appendChild(itemEl);
         this.gridItems.push(itemObj);
+    }
+
+    public updateSnapshots() {
+        this.gridItems.forEach(item => {
+            item.imgEl.src = thumbnailGenerator.generate(item.flower);
+            item.imgEl.style.opacity = '1';
+            item.isHovered = false;
+        });
     }
 
     public getSelectedParams(): FlowerParams[] {
@@ -175,10 +213,12 @@ export class EvolutionManager {
         this.sharedRotationX = rotationX; this.sharedRotationY = rotationY;
     }
 
-    public render() {
+    public render(forceAll: boolean = false) {
         this.renderer.setScissorTest(true);
         this.gridItems.forEach(item => {
-            const rect = item.element.getBoundingClientRect();
+            if (!item.isHovered && !forceAll) return;
+
+            const rect = item.previewEl.getBoundingClientRect();
             if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) return;
             const width = rect.right - rect.left, height = rect.bottom - rect.top;
             const left = rect.left, bottom = window.innerHeight - rect.bottom;

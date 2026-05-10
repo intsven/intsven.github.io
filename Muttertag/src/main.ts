@@ -182,7 +182,14 @@ function onPointerMove(e: MouseEvent | TouchEvent) {
     globalRotationX = Math.max(-Math.PI * 0.4, Math.min(Math.PI * 0.4, globalRotationX));
     previousX = x; previousY = y;
 }
-function onPointerUp() { isDragging = false; }
+function onPointerUp() { 
+    if (isDragging) {
+        isDragging = false; 
+        evolutionManager.updateSnapshots();
+        galleryManager.updateSnapshots();
+        historyManager.updateSnapshots();
+    }
+}
 
 window.addEventListener('mousedown', onPointerDown);
 window.addEventListener('mousemove', onPointerMove);
@@ -216,11 +223,13 @@ function animate(time: number) {
   renderer.setScissorTest(false); renderer.clear();
   sceneManager.setRotation(globalRotationX, globalRotationY);
   sceneManager.render();
+  
+  const dynamicAll = isDragging;
   evolutionManager.update(globalRotationX, globalRotationY);
-  evolutionManager.render();
+  evolutionManager.render(dynamicAll);
   galleryManager.update(globalRotationX, globalRotationY);
-  galleryManager.render();
+  galleryManager.render(dynamicAll);
   historyManager.update(globalRotationX, globalRotationY);
-  historyManager.render();
+  historyManager.render(dynamicAll);
 }
 requestAnimationFrame(animate);
