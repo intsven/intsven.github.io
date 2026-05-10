@@ -15,6 +15,7 @@ const historyEmptyMsg = document.getElementById('history-empty-msg')!;
 const btnReset = document.getElementById('btn-reset-evolution')!;
 const btnFavMain = document.getElementById('btn-fav-main')!;
 const btnNextGen = document.getElementById('btn-next-gen') as HTMLButtonElement;
+const inputGridCount = document.getElementById('input-grid-count') as HTMLInputElement;
 
 const sceneManager = new SceneManager(canvasContainer, mainPlaceholder);
 
@@ -127,9 +128,11 @@ function update(save = true, addToHistory = false) {
   if (save) saveCurrentBase(currentParams);
   if (addToHistory) addHistory(currentParams);
   sceneManager.updateFlower(currentParams);
-  evolutionManager.updateGrid(currentParams, evolutionGrid);
+  evolutionManager.updateGrid(currentParams, evolutionGrid, parseInt(inputGridCount.value) || 9);
   btnNextGen.disabled = true;
 }
+
+inputGridCount.addEventListener('change', () => update(false, false));
 
 btnNextGen.onclick = () => {
     const selected = evolutionManager.getSelectedParams();
@@ -139,7 +142,7 @@ btnNextGen.onclick = () => {
         updateUI();
         saveCurrentBase(currentParams);
         sceneManager.updateFlower(currentParams);
-        evolutionManager.breed(selected, evolutionGrid);
+        evolutionManager.breed(selected, evolutionGrid, parseInt(inputGridCount.value) || 9);
         btnNextGen.disabled = true;
     }
 };

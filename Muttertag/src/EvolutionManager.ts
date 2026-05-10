@@ -28,12 +28,12 @@ export class EvolutionManager {
         this.scene.add(directionalLight);
     }
 
-    public updateGrid(baseParams: FlowerParams, container: HTMLElement) {
+    public updateGrid(baseParams: FlowerParams, container: HTMLElement, count: number = 9) {
         container.innerHTML = '';
         this.gridItems = [];
         this.scene.children = this.scene.children.filter(c => !(c instanceof THREE.Group));
 
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < count; i++) {
             const params = i === 0 ? JSON.parse(JSON.stringify(baseParams)) : this.mutate(baseParams);
             this.addGridItem(params, container, i === 0);
         }
@@ -71,14 +71,14 @@ export class EvolutionManager {
         return this.gridItems.filter(i => i.selected).map(i => i.params);
     }
 
-    public breed(parents: FlowerParams[], container: HTMLElement) {
+    public breed(parents: FlowerParams[], container: HTMLElement, count: number = 9) {
         if (parents.length === 0) return;
         
         container.innerHTML = '';
         this.gridItems = [];
         this.scene.children = this.scene.children.filter(c => !(c instanceof THREE.Group));
 
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < count; i++) {
             let offspring: FlowerParams;
             
             if (parents.length === 1) {
