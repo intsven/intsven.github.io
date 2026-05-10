@@ -15,7 +15,9 @@ export class EvolutionManager {
         flower: THREE.Group, 
         selected: boolean,
         isHovered: boolean,
-        isDragged: boolean
+        isDragged: boolean,
+        offsetX: number,
+        offsetY: number
     }[] = [];
     private sharedRotationY = 0;
     private sharedRotationX = 0;
@@ -72,11 +74,15 @@ export class EvolutionManager {
             flower, 
             selected: false,
             isHovered: false,
-            isDragged: false
+            isDragged: false,
+            offsetX: 0,
+            offsetY: 0
         };
 
         // Interaction logic for performance mode
         previewEl.onmouseenter = () => { 
+            itemObj.offsetX = flower.rotation.x - this.sharedRotationX;
+            itemObj.offsetY = flower.rotation.y - this.sharedRotationY;
             itemObj.isHovered = true; 
             imgEl.style.opacity = '0';
         };
@@ -87,8 +93,18 @@ export class EvolutionManager {
                 imgEl.style.opacity = '1';
             }
         };
-        previewEl.addEventListener('mousedown', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
-        previewEl.addEventListener('touchstart', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
+        previewEl.addEventListener('mousedown', () => { 
+            itemObj.offsetX = flower.rotation.x - this.sharedRotationX;
+            itemObj.offsetY = flower.rotation.y - this.sharedRotationY;
+            itemObj.isDragged = true; 
+            imgEl.style.opacity = '0'; 
+        });
+        previewEl.addEventListener('touchstart', () => { 
+            itemObj.offsetX = flower.rotation.x - this.sharedRotationX;
+            itemObj.offsetY = flower.rotation.y - this.sharedRotationY;
+            itemObj.isDragged = true; 
+            imgEl.style.opacity = '0'; 
+        });
 
         // Controls wrapper (at the top)
         const controlsEl = document.createElement('div');
@@ -241,7 +257,8 @@ export class EvolutionManager {
             this.renderer.setScissor(left, bottom, width, height);
             const existingFlower = this.scene.children.find(c => c instanceof THREE.Group);
             if (existingFlower) this.scene.remove(existingFlower);
-            item.flower.rotation.x = this.sharedRotationX; item.flower.rotation.y = this.sharedRotationY;
+            item.flower.rotation.x = this.sharedRotationX + item.offsetX; 
+            item.flower.rotation.y = this.sharedRotationY + item.offsetY;
             this.scene.add(item.flower);
             this.camera.aspect = width / height; this.camera.updateProjectionMatrix();
             this.renderer.render(this.scene, this.camera);

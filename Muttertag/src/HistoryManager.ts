@@ -14,7 +14,9 @@ export class HistoryManager {
         params: FlowerParams, 
         flower: THREE.Group,
         isHovered: boolean,
-        isDragged: boolean
+        isDragged: boolean,
+        offsetX: number,
+        offsetY: number
     }[] = [];
     private sharedRotationY = 0;
     private sharedRotationX = 0;
@@ -45,7 +47,6 @@ export class HistoryManager {
             const itemEl = document.createElement('div');
             itemEl.className = 'history-item';
             
-            // Preview area (at the bottom)
             const previewEl = document.createElement('div');
             previewEl.className = 'item-preview';
 
@@ -63,11 +64,14 @@ export class HistoryManager {
                 params, 
                 flower,
                 isHovered: false,
-                isDragged: false
+                isDragged: false,
+                offsetX: 0,
+                offsetY: 0
             };
 
-            // Interaction logic
             previewEl.onmouseenter = () => {
+                itemObj.offsetX = flower.rotation.x - this.sharedRotationX;
+                itemObj.offsetY = flower.rotation.y - this.sharedRotationY;
                 itemObj.isHovered = true;
                 imgEl.style.opacity = '0';
             };
@@ -78,10 +82,19 @@ export class HistoryManager {
                     imgEl.style.opacity = '1';
                 }
             };
-            previewEl.addEventListener('mousedown', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
-            previewEl.addEventListener('touchstart', () => { itemObj.isDragged = true; imgEl.style.opacity = '0'; });
+            previewEl.addEventListener('mousedown', () => { 
+                itemObj.offsetX = flower.rotation.x - this.sharedRotationX;
+                itemObj.offsetY = flower.rotation.y - this.sharedRotationY;
+                itemObj.isDragged = true; 
+                imgEl.style.opacity = '0'; 
+            });
+            previewEl.addEventListener('touchstart', () => { 
+                itemObj.offsetX = flower.rotation.x - this.sharedRotationX;
+                itemObj.offsetY = flower.rotation.y - this.sharedRotationY;
+                itemObj.isDragged = true; 
+                imgEl.style.opacity = '0'; 
+            });
 
-            // Controls wrapper (at the top)
             const controlsEl = document.createElement('div');
             controlsEl.className = 'item-controls';
 
@@ -93,7 +106,6 @@ export class HistoryManager {
             itemEl.appendChild(controlsEl);
 
             itemEl.appendChild(previewEl);
-            
             container.appendChild(itemEl);
             this.gridItems.push(itemObj);
         });
@@ -135,8 +147,10 @@ export class HistoryManager {
             this.renderer.setScissor(left, bottom, width, height);
             const existingFlower = this.scene.children.find(c => c instanceof THREE.Group);
             if (existingFlower) this.scene.remove(existingFlower);
-            item.flower.rotation.x = this.sharedRotationX;
-            item.flower.rotation.y = this.sharedRotationY;
+            
+            item.flower.rotation.x = this.sharedRotationX + item.offsetX;
+            item.flower.rotation.y = this.sharedRotationY + item.offsetY;
+            
             this.scene.add(item.flower);
             this.camera.aspect = width / height;
             this.camera.updateProjectionMatrix();
