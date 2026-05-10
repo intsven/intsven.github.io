@@ -14,6 +14,7 @@ const favEmptyMsg = document.getElementById('fav-empty-msg')!;
 const historyEmptyMsg = document.getElementById('history-empty-msg')!;
 const btnReset = document.getElementById('btn-reset-evolution')!;
 const btnFavMain = document.getElementById('btn-fav-main')!;
+const btnExportImage = document.getElementById('btn-export-image')!;
 const btnNextGen = document.getElementById('btn-next-gen') as HTMLButtonElement;
 const inputGridCount = document.getElementById('input-grid-count') as HTMLInputElement;
 const btnHelp = document.getElementById('btn-help')!;
@@ -202,6 +203,16 @@ window.addEventListener('touchend', onPointerUp);
 Object.values(inputs).forEach((input: any) => { if (input) input.addEventListener('input', () => update()); });
 
 btnFavMain.onclick = () => addFavorite(currentParams);
+
+btnExportImage.onclick = () => {
+    const renderer = sceneManager.getRenderer();
+    sceneManager.render();
+    const dataUrl = renderer.domElement.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `meine-blume-${Date.now()}.png`;
+    link.href = dataUrl;
+    link.click();
+};
 
 btnReset.onclick = () => { 
     currentParams = createRandomFlower();
