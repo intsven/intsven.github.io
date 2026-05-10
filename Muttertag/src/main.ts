@@ -24,7 +24,10 @@ const sceneManager = new SceneManager(canvasContainer, mainPlaceholder);
 
 // Modal Logic
 function showModal() { helpModal.style.display = 'flex'; }
-function hideModal() { helpModal.style.display = 'none'; }
+function hideModal() { 
+    helpModal.style.display = 'none';
+    localStorage.setItem('muttertag_visited', 'true');
+}
 
 btnHelp.onclick = showModal;
 btnCloseModal.onclick = hideModal;
@@ -32,7 +35,6 @@ btnCloseModal.onclick = hideModal;
 // Show on first visit
 if (!localStorage.getItem('muttertag_visited')) {
     showModal();
-    localStorage.setItem('muttertag_visited', 'true');
 }
 
 let favorites: FlowerParams[] = loadFavorites();
