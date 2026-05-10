@@ -43,7 +43,16 @@ export class EvolutionManager {
         const itemEl = document.createElement('div');
         itemEl.className = 'evolution-item';
         
-        const itemObj = { element: itemEl, params, flower: FlowerGenerator.createFlower(params), selected: false };
+        // Preview area (at the bottom)
+        const previewEl = document.createElement('div');
+        previewEl.className = 'item-preview';
+
+        const itemObj = { 
+            element: previewEl, 
+            params, 
+            flower: FlowerGenerator.createFlower(params), 
+            selected: false 
+        };
 
         // Controls wrapper (at the top)
         const controlsEl = document.createElement('div');
@@ -66,11 +75,8 @@ export class EvolutionManager {
             this.onSelectionChangeCallback(this.getSelectedParams().length);
         };
         controlsEl.appendChild(selectBtn);
+        
         itemEl.appendChild(controlsEl);
-
-        // Preview area (at the bottom)
-        const previewEl = document.createElement('div');
-        previewEl.className = 'item-preview';
         itemEl.appendChild(previewEl);
 
         container.appendChild(itemEl);
@@ -92,14 +98,12 @@ export class EvolutionManager {
             let offspring: FlowerParams;
             
             if (parents.length === 1) {
-                // If only one selected, index 0 is copy, others are mutations
                 offspring = i === 0 ? JSON.parse(JSON.stringify(parents[0])) : this.mutate(parents[0]);
             } else {
-                // Pick two random parents for crossover
                 const p1 = parents[Math.floor(Math.random() * parents.length)];
                 const p2 = parents[Math.floor(Math.random() * parents.length)];
                 offspring = this.crossover(p1, p2);
-                if (i > parents.length) offspring = this.mutate(offspring); // Extra mutation for non-elitists
+                if (i > parents.length) offspring = this.mutate(offspring);
             }
             
             this.addGridItem(offspring, container, i < parents.length);
@@ -108,27 +112,17 @@ export class EvolutionManager {
 
     private crossover(p1: FlowerParams, p2: FlowerParams): FlowerParams {
         const child: FlowerParams = JSON.parse(JSON.stringify(p1));
-        
-        // Crossover global props
         if (Math.random() > 0.5) child.centerColor = p2.centerColor;
         if (Math.random() > 0.5) child.visualStyle = p2.visualStyle;
         if (Math.random() > 0.5) child.stemLength = p2.stemLength;
 
-        // Crossover layers
-        // We'll take layers from both parents randomly
         const maxLayers = Math.max(p1.petalSteps, p2.petalSteps);
         child.layers = [];
         for (let i = 0; i < maxLayers; i++) {
-            const layerFromP1 = p1.layers[i];
-            const layerFromP2 = p2.layers[i];
-            
-            if (layerFromP1 && layerFromP2) {
-                child.layers.push(Math.random() > 0.5 ? JSON.parse(JSON.stringify(layerFromP1)) : JSON.parse(JSON.stringify(layerFromP2)));
-            } else if (layerFromP1) {
-                if (Math.random() > 0.2) child.layers.push(JSON.parse(JSON.stringify(layerFromP1)));
-            } else if (layerFromP2) {
-                if (Math.random() > 0.2) child.layers.push(JSON.parse(JSON.stringify(layerFromP2)));
-            }
+            const l1 = p1.layers[i], l2 = p2.layers[i];
+            if (l1 && l2) child.layers.push(Math.random() > 0.5 ? JSON.parse(JSON.stringify(l1)) : JSON.parse(JSON.stringify(l2)));
+            else if (l1 && Math.random() > 0.2) child.layers.push(JSON.parse(JSON.stringify(l1)));
+            else if (l2 && Math.random() > 0.2) child.layers.push(JSON.parse(JSON.stringify(l2)));
         }
         child.petalSteps = child.layers.length;
         return child;
